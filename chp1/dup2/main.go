@@ -31,12 +31,6 @@ func main() {
 			fmt.Printf("[ERROR]%v", err)
 		}
 	}
-
-	for v, n := range counts {
-		if n > 1 {
-			fmt.Printf("%v\t%v\n", v, n)
-		}
-	}
 }
 
 func calculateDuplicates(f *os.File, c map[string]int) error {
@@ -47,6 +41,12 @@ func calculateDuplicates(f *os.File, c map[string]int) error {
 
 	if err := s.Err(); err != nil {
 		return err
+	}
+
+	for v, n := range c {
+		if n > 1 {
+			fmt.Printf("%v\t%v\t%v\n", f.Name(), v, n)
+		}
 	}
 
 	return nil
