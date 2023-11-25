@@ -11,8 +11,11 @@ import (
 func main() {
 	counts := make(map[string]int)
 	files := os.Args[1:]
+
 	if len(files) == 0 {
-		calculateDuplicates(os.Stdin, counts)
+		if err := calculateDuplicates(os.Stdin, counts); err != nil {
+			fmt.Printf("[ERROR]%v", err)
+		}
 		return
 	}
 
@@ -22,8 +25,17 @@ func main() {
 			fmt.Printf("[ERROR]%v", err)
 			os.Exit(1)
 		}
+		defer f.Close()
 
-		calculateDuplicates(f, counts)
+		if err := calculateDuplicates(f, counts); err != nil {
+			fmt.Printf("[ERROR]%v", err)
+		}
+	}
+
+	for v, n := range counts {
+		if n > 1 {
+			fmt.Printf("%v\t%v\n", v, n)
+		}
 	}
 }
 
